@@ -114,7 +114,8 @@ async def chunk_md_with_headers(
         # sub_chunks = text_splitter.split_text(doc.page_content)
         chunk_dict = {
                 "content": doc.page_content,
-                "metadata": doc.metadata
+                "metadata": doc.metadata,
+                "location" : path
         }
         final_chunks.append(chunk_dict)
 
