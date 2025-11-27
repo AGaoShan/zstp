@@ -3,3 +3,4 @@ numpy
 scikit-learn
 neo4j
 openai
+promptic
