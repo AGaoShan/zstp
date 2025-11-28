@@ -75,9 +75,6 @@ async def chunk_md_file(
     return chunks
 
 
-
-
-
 async def chunk_md_with_headers(
         path: str,
         headers_to_split_on: List[tuple] = [
