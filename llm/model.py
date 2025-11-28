@@ -17,6 +17,7 @@ class RemediationSuggestion:
 @dataclass
 class VulnerabilityReport:
     """漏洞报告主类"""
+    title: str
     vulnerability_type: str
     severity: str
     root_cause_analysis: RootCauseAnalysis

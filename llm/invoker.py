@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from promptic import llm
 from litellm import litellm
-from llm.model import SecurityViewDimensions,AuditReport
+from llm.model import SecurityViewDimensions,AuditReport,VulnerabilityReport
 litellm.api_key = "sk-Umy6QJiK8EY6Aco8EbriaMB1cw2nq15bY6y8OBM8mJUQTxcr"
 litellm.api_base = "https://yunwu.ai/v1"
 from dotenv import load_dotenv
@@ -103,5 +103,88 @@ def get_report(code: str,Top_Reranked_Findings)->AuditReport:
     {code}
     #### 2. Top_Reranked_Findings
     {Top_Reranked_Findings}
+    """
+    pass
+
+@llm(
+    model="gpt-4o-mini",
+    temperature=0.0  # Low temperature for structured tasks is recommended
+)
+def extract_audit_insights(audit_report_text:str)->VulnerabilityReport:
+    """
+        ---Role---
+    You are a Smart Contract Security Information Extraction Engine,
+    specialized in parsing professional audit reports and converting
+    natural language vulnerability descriptions into formalized JSON
+    security objects.
+
+    ---Task---
+    Given an input Solidity smart contract audit report (or report excerpt),
+    identify ONE concrete vulnerability instance described in the text and
+    extract it into the EXACT JSON schema provided below.
+
+    Your task is **information extraction only**.
+    You must NOT invent, infer, or speculate beyond what is explicitly or
+    implicitly supported by the report.
+
+    ---Extraction Rules---
+    1. Only extract information that is clearly supported by the report text.
+    2. If a field is partially specified, summarize conservatively.
+    3. Do NOT add fields, do NOT remove fields, do NOT rename keys.
+    4. Maintain valid JSON syntax.
+    5. Use concise, security-audit–grade language.
+    6. If multiple vulnerabilities are present, select the most severe one.
+    7. Output JSON ONLY — no explanations, no markdown, no extra text.
+    8. The title corresponds to a secondary title, such as ## xxxx
+    ---Required Output JSON Schema---
+{{
+    "title": "",
+  "vulnerability_type": "",
+  "severity": "",
+  "root_cause_analysis": {{
+    "logic_flow": [],
+    "violated_invariant": ""
+  }},
+  "code_pattern_abstract": "",
+  "impact": "",
+  "remediation_suggestion": {{
+    "technique": "",
+    "code_change": ""
+  }},
+  "false_positive_indicators": ""
+}}
+
+    ---Field Interpretation Guidelines---
+    • vulnerability_type:
+      Use standard audit taxonomy terms (e.g., Reentrancy, Access Control, Arithmetic Overflow).
+
+    • severity:
+      One of: Critical | High | Medium | Low | Informational.
+
+    • root_cause_analysis.logic_flow:
+      Abstract execution steps that cause the vulnerability (ordered list).
+
+    • root_cause_analysis.violated_invariant:
+      Name the design principle or invariant that is violated
+      (e.g., Checks-Effects-Interactions, Authorization Invariant).
+
+    • code_pattern_abstract:
+      High-level description of the unsafe pattern WITHOUT copying code.
+
+    • impact:
+      Worst-case security or financial consequence described in the report.
+
+    • remediation_suggestion.technique:
+      High-level mitigation approach (pattern, guard, validation, redesign).
+
+    • remediation_suggestion.code_change:
+      Concrete but abstract fix strategy (no full code required).
+
+    • false_positive_indicators:
+      Conditions under which this pattern would be safe or non-exploitable.
+
+    ---Input---
+    {audit_report_text}
+
     """
     pass

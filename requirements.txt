@@ -1,6 +1,10 @@
 langchain_text_splitters == 1.0.0
-numpy
-scikit-learn
-neo4j
-openai
-promptic
+numpy~=1.26.4
+scikit-learn~=1.7.2
+neo4j~=6.0.3
+openai~=2.6.1
+prompticpip
+pydantic~=2.12.3
+promptic~=1.2.0
+litellm~=1.78.6
+langchain~=0.0.350

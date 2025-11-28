@@ -127,14 +127,14 @@ async def chunk_md_with_headers(
 
 ##test
 
-#logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-# async def main():
-#     chunks = await chunk_md_with_headers("test.md",headers_to_split_on= [("##", "Header 2")])
-#     for chunk in chunks:
-#         print(chunk["metadata"],"\n")
-#         print(chunk["content"])
-#         print("***" * 50)
-#
-#
-# if __name__ == "__main__":
-#     asyncio.run(main())
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+async def main():
+    chunks = await chunk_md_with_headers("test.md",headers_to_split_on= [("##", "Header 2")])
+    for chunk in chunks:
+        print(chunk["metadata"],"\n")
+        print(chunk["content"])
+        print("***" * 50)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
